@@ -1,0 +1,127 @@
+/*------------------------------------------------------------------
+[Master Stylesheet]
+
+Project: Ranfolio
+Author:	VLThemes
+
+01. Selection
+02. Typography
+03. Home
+04. Preloader
+
+-------------------------------------------------------------------*/
+
+@import url('https://fonts.googleapis.com/css?family=Karla:400')
+
+$font = 'Karla', sans-serif
+$transition = ease-in-out
+
+
+
+$gray = #666666
+$black = #000000
+$white = #ffffff
+
+
+/*!
+01. Selection
+*/
+
+::-moz-selection
+	color $white
+	background-color $black
+	
+::selection
+	color $white
+	background-color $black
+
+/*!
+02. Typography
+*/
+
+body
+	margin 0
+	padding 0
+	min-width 320px
+	color $black
+	font-size 16px
+	line-height 1.6rem
+	font-weight 300
+	font-family $font
+	background-color $white
+	-webkit-font-smoothing antialiased
+	-moz-osx-font-smoothing grayscale
+
+a
+	text-decoration none
+	color inherit
+	transition all 300ms $transition
+
+a:hover,
+a:focus,
+a:active
+	color inherit
+	text-decoration none
+	outline none
+
+img
+	max-width 100%
+	height auto
+
+/*!
+03. Ranfolio
+*/
+
+.vl-example-ranfolio
+	height 100vh
+	display flex
+	align-items center
+	justify-content center
+	
+.vl-example-ranfolio a,
+.vl-ranfolio-delimiter
+	font-size 4vw
+	line-height 1.4
+ 
+.vl-example-ranfolio.hovered a
+	color $gray
+	
+.vl-example-ranfolio a:hover
+	color $black
+
+.vl-ranfolio-delimiter
+	color $gray
+	display inline-block
+	
+.vl-ranfolio-inner
+	text-align center
+	padding 0 60px
+	
+
+/*!
+04. Preloader
+*/
+
+.vl-preloader-holder
+	position fixed
+	top 0
+	left 0
+	width 100%
+	height 100%
+	z-index 222
+	display flex
+	align-items center
+	justify-content center
+	background-color $white
+	span
+		display block
+		height 40px
+		width 40px
+		border 5px solid rgba($black, 20%)
+		border-bottom-color transparent
+		border-radius 50%
+		animation spinner 1s linear infinite
+	
+@keyframes spinner
+	100%
+		transform rotate(360deg)

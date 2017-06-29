@@ -1,0 +1,39 @@
+/*------------------------------------------------------------------
+[Master Stylesheet]
+
+Project: Ranfolio
+Author:	VLThemes
+Version: 1.0
+Date: 28/06/2017
+
+-------------------------------------------------------------------*/
+
+.vl-ranfolio{
+	position: relative;
+	overflow: hidden;
+}
+
+.vl-ranfolio-image{
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: -1;
+	pointer-events: none;
+}
+
+.vl-ranfolio-image img{
+	position: absolute;
+	visibility: hidden;
+}
+
+.vl-ranfolio-delimiter{
+	margin: 0 10px;
+}
+
+.vl-ranfolio-inner{
+	font-size: 0;
+	line-height: 0;
+	width: 100%;
+}
