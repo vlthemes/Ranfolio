@@ -36,7 +36,8 @@ To customise your Ranfolio you can call it with options:
 
 ```javascript
 $(".vl-example-ranfolio").ranfolio({
-    imageWidthInterval: [16, 33], //Maximum width of the image when hovering in percent (min, max)
-    delimiter: "/" //Delimiter between links
+  imageWidthInterval: [16, 33], //Maximum width of the image when hovering in percent (min, max)
+  delimiter: "/" //Delimiter between links
+  debug: false //Debug mode
 });
 ```
