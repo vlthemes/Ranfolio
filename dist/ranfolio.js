@@ -1,3 +1,10 @@
+/*! 
+Copyright (c) 2017 by VLThemes
+Product: https://github.com/vlthemes/Ranfolio
+Author: https://github.com/vlthemes/
+License: MIT https://opensource.org/licenses/MIT
+*/
+
 (function($) {
 	"use strict";
 	var methods = {
