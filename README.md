@@ -36,8 +36,11 @@ To customise your Ranfolio you can call it with options:
 
 ```javascript
 $(".vl-example-ranfolio").ranfolio({
-  imageWidthInterval: [16, 33], //Maximum width of the image when hovering in percent (min, max)
-  delimiter: "/" //Delimiter between links
-  debug: false //Debug mode
+  randomWidth: true, //Random image width
+  randomInterval: [16, 33], //Maximum width of the image when hovering in percent (min, max)
+  randomPosition: false, //Random position on screen
+  showCounter: true, //Show counters before link element
+  delimiter: "", //Delimiter between links,
+  duration: 400 //Duration of appearing of the picture
 });
 ```
