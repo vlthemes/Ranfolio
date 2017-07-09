@@ -11,9 +11,12 @@ License: MIT https://opensource.org/licenses/MIT
 		init: function(options) {
 			var $root = $(this);
 			var settings = $.extend({
-				imageWidthInterval: [16, 33], //Maximum width of the image when hovering in percent (min, max)
-				delimiter: "/", //Delimiter between links,
-				debug: true //Debug mode
+				randomWidth: true, //Random image width
+				randomInterval: [16, 33], //Maximum width of the image when hovering in percent (min, max)
+				randomPosition: false, //Random position on screen
+				showCounter: true, //Show counters before link element
+				delimiter: "", //Delimiter between links,
+				duration: 400 //Duration of appearing of the picture
 			}, options);
 			return this.each(function() {
 				var initMethods = {
@@ -21,63 +24,61 @@ License: MIT https://opensource.org/licenses/MIT
 						var $main = $(this);
 						initMethods.prepareRanfolio.apply($main);
 						initMethods.buildRanfolio.apply($main);
-						initMethods.addDelimiter.apply($main);
+						if("" != settings.delimiter){
+							initMethods.addDelimiter.apply($main);
+						}
 					},
 					prepareRanfolio: function(){
 						var self = $(this);
 						self.addClass('vl-ranfolio');
 						self.wrapInner('<div class="vl-ranfolio-inner">');
 						self.find('a').addClass('vl-ranfolio-link');
-						self.append('<div class="vl-ranfolio-image"></div>');
+						self.append('<div class="vl-ranfolio-image"><img src="" alt=""></div>');
+						if(true == settings.showCounter){
+							self.addClass('vl-ranfolio-counter');
+						}
 					},
 					buildRanfolio: function(){
 						var self = $(this),
 							linkElement = self.find('a.vl-ranfolio-link'),
-							imageContainer = self.find('.vl-ranfolio-image');
-						linkElement.each(function(){
-							var el = $(this),
-								imageSrc = el.data('ranfolio-image-src');
-							el.on({
-								mouseenter: function(){
-									self.addClass('hovered');
-									var randomWidth = Math.floor(Math.random() * (settings.imageWidthInterval[1] - settings.imageWidthInterval[0] + 1)) + settings.imageWidthInterval[0],
-										appendedImage = imageContainer.append('<img src="'+imageSrc+'" alt="'+el.text()+'" style="max-width:' + randomWidth + '%;">').end().find('img'),
-										parentW = self.width(),
-										parentH = self.height();
-									if (typeof imagesLoaded !== 'undefined') {
-										appendedImage.imagesLoaded(function() {
-											var imgW = appendedImage.width(),
-												imgH = appendedImage.height(),
-												posx = (Math.random() * (parentW - imgW)).toFixed(),
-												posy = (Math.random() * (parentH - imgH)).toFixed();
-											appendedImage.css({
-												'top': posy + 'px',
-												'left': posx + 'px',
-												'visibility': 'visible'
-											});
-										}).progress(function(instance, image) {
-											var result = image.isLoaded ? 'loaded' : 'broken';
-											settings.debug ? console.log('Image is ' + result + ' for ' + image.img.src) : '';
-										});					
-									}else{
-										appendedImage.on('load', function() {
-											var imgW = appendedImage.width(),
-												imgH = appendedImage.height(),
-												posx = (Math.random() * (parentW - imgW)).toFixed(),
-												posy = (Math.random() * (parentH - imgH)).toFixed();
-											appendedImage.css({
-												'top': posy + 'px',
-												'left': posx + 'px',
-												'visibility': 'visible'
-											});
-										});						
-									}
-								},
-								mouseleave: function(){
-									self.removeClass('hovered');
-									imageContainer.empty();
+							image = self.find('.vl-ranfolio-image img');
+						linkElement.on({
+							mouseenter: function(){
+								self.addClass('hovered');
+								var src = $(this).data('image'),
+									color = $(this).data('color'),
+									parentW = self.width(),
+									parentH = self.height();
+								$(this).attr('style', 'color: '+ color + ';');
+								image.attr('src', src);
+								if(true == settings.randomWidth){
+									var randomWidth = Math.floor(Math.random() * (settings.randomInterval[1] - settings.randomInterval[0] + 1)) + settings.randomInterval[0];
+									image.css('max-width', randomWidth + '%');
 								}
-							});
+								image.on('load', function() {
+									if(true == settings.randomPosition){
+										var imgW = image.width(),
+											imgH = image.height(),
+											posx = (Math.random() * (parentW - imgW)).toFixed(),
+											posy = (Math.random() * (parentH - imgH)).toFixed();
+										image.css({
+											'position': 'absolute',
+											'top': posy + 'px',
+											'left': posx + 'px'
+										});		
+									}
+									image.stop().animate({
+										opacity: 1
+									}, settings.duration);
+								});
+							},
+							mouseleave: function(){
+								self.removeClass('hovered');
+								$(this).attr('style', '');
+								image.attr('style', '').attr('src', '').stop().animate({
+									opacity: 0
+								}, settings.duration);
+							}
 						});
 					},
 					addDelimiter: function() {
@@ -90,8 +91,8 @@ License: MIT https://opensource.org/licenses/MIT
 			});
 		},
 		destroy: function() {
-			this.removeClass('vl-ranfolio hovered');
-			this.find('a').removeClass('vl-ranfolio-link');
+			this.removeClass('vl-ranfolio vl-ranfolio-counter hovered');
+			this.find('a').removeClass('vl-ranfolio-link').attr('style', '');
 			this.find('.vl-ranfolio-image').remove();
 			this.find('.vl-ranfolio-delimiter').remove();
 		}

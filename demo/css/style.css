@@ -63,20 +63,18 @@ img {
   align-items: center;
   justify-content: center;
 }
-.vl-example-ranfolio a,
-.vl-ranfolio-delimiter {
+.vl-example-ranfolio a {
   font-size: 4vw;
   line-height: 1.4;
 }
+.vl-example-ranfolio a + a {
+  margin-left: 30px;
+}
 .vl-example-ranfolio.hovered a {
-  color: #666;
+  color: rgba(0,0,0,0.5);
 }
 .vl-example-ranfolio a:hover {
   color: #000;
-}
-.vl-ranfolio-delimiter {
-  color: #666;
-  display: inline-block;
 }
 .vl-ranfolio-inner {
   text-align: center;
