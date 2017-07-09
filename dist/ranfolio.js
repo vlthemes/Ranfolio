@@ -10,10 +10,11 @@ License: MIT https://opensource.org/licenses/MIT
 	var methods = {
 		init: function(options) {
 			var $root = $(this);
+			var hovered = null;
 			var settings = $.extend({
 				randomWidth: true, //Random image width
 				randomInterval: [16, 33], //Maximum width of the image when hovering in percent (min, max)
-				randomPosition: false, //Random position on screen
+				randomPosition: true, //Random position on screen
 				showCounter: true, //Show counters before link element
 				delimiter: "", //Delimiter between links,
 				duration: 400 //Duration of appearing of the picture
@@ -27,6 +28,7 @@ License: MIT https://opensource.org/licenses/MIT
 						if("" != settings.delimiter){
 							initMethods.addDelimiter.apply($main);
 						}
+						initMethods.changeLinkColor.apply($main);
 					},
 					prepareRanfolio: function(){
 						var self = $(this);
@@ -38,19 +40,37 @@ License: MIT https://opensource.org/licenses/MIT
 							self.addClass('vl-ranfolio-counter');
 						}
 					},
+					changeLinkColor: function(){
+						var self = $(this),
+							linkElement = self.find('a.vl-ranfolio-link');
+						linkElement.each(function(){
+							var color = $(this).data('color');
+							if(color){
+								$(this).on({
+									mouseenter: function(){
+										if(color){
+											$(this).attr('style', 'color: '+ color + ';');
+										}
+									},
+									mouseleave: function(){
+										$(this).attr('style', '');
+									}
+								});
+							}
+						});
+					},
 					buildRanfolio: function(){
 						var self = $(this),
 							linkElement = self.find('a.vl-ranfolio-link'),
 							image = self.find('.vl-ranfolio-image img');
-						linkElement.on({
-							mouseenter: function(){
-								self.addClass('hovered');
-								var src = $(this).data('image'),
-									color = $(this).data('color'),
-									parentW = self.width(),
-									parentH = self.height();
-								$(this).attr('style', 'color: '+ color + ';');
+						linkElement.on('mouseenter', function(){
+							self.addClass('hovered');
+							var src = $(this).data('image'),
+								parentW = self.width(),
+								parentH = self.height();
+							if(src != hovered){
 								image.attr('src', src);
+								hovered = src;
 								if(true == settings.randomWidth){
 									var randomWidth = Math.floor(Math.random() * (settings.randomInterval[1] - settings.randomInterval[0] + 1)) + settings.randomInterval[0];
 									image.css('max-width', randomWidth + '%');
@@ -65,20 +85,19 @@ License: MIT https://opensource.org/licenses/MIT
 											'position': 'absolute',
 											'top': posy + 'px',
 											'left': posx + 'px'
-										});		
+										});
 									}
-									image.stop().animate({
-										opacity: 1
-									}, settings.duration);
 								});
-							},
-							mouseleave: function(){
-								self.removeClass('hovered');
-								$(this).attr('style', '');
-								image.attr('style', '').attr('src', '').stop().animate({
-									opacity: 0
-								}, settings.duration);
 							}
+							image.stop().animate({
+								opacity: 1
+							}, settings.duration);
+						});
+						linkElement.on('mouseleave', function(){
+							self.removeClass('hovered');
+							image.stop().animate({
+								opacity: 0
+							}, 0);
 						});
 					},
 					addDelimiter: function() {
